@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.School;
 import com.school.sba.enums.UserRole;
+import com.school.sba.exception.IllegalRequestException;
 import com.school.sba.exception.UserNotFoundByIdException;
 import com.school.sba.repository.SchoolRepository;
 import com.school.sba.repository.UserRepository;
@@ -68,9 +69,9 @@ public class SchoolServiceImplimentation implements SchoolService
 
 					return new ResponseEntity<ResponseStructure<SchoolResponse>>(resp,HttpStatus.CREATED);
 				}else 
-					throw new RuntimeException(); 
+					throw new IllegalRequestException("illegal school request"); 
 			}else 
-				throw new RuntimeException(); 
+				throw new IllegalRequestException("illegal user request");  
 
 		}).orElseThrow(()-> new UserNotFoundByIdException("user not found"));
 

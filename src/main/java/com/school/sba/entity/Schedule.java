@@ -1,5 +1,6 @@
 package com.school.sba.entity;
 
+import java.time.Duration;
 import java.time.LocalTime;
 
 import org.springframework.stereotype.Component;
@@ -16,24 +17,24 @@ import lombok.Setter;
 
 @Component
 @Entity
-@Getter
+@Getter 
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Schedule 
-{
+{ 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int scheduleId;
 	private LocalTime scheduleOpensAt;
 	private LocalTime scheduleCloseAt;
 	private int scheduleClassHourPerDay;
-	private LocalTime scheduleClassHourLenght;
+	private Duration scheduleClassHourLenghtInMinute;
 	private LocalTime scheduleBreakTime;
-	private LocalTime scheduleBreakLenght;
+	private Duration scheduleBreakLenghtInMinute;
 	private LocalTime scheduleLunchTime;
-	private LocalTime scheduleLunchLenght;
-
+	private Duration scheduleLunchLenghtInMinute;
+ 
 	
-}
+} 
