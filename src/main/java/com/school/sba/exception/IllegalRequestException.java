@@ -3,14 +3,9 @@ package com.school.sba.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-
-@Getter
+@Getter 
 @AllArgsConstructor
-public class SchoolNotFoundByIdException extends RuntimeException 
+public class IllegalRequestException extends RuntimeException
 {
-	
-
-	private String message;
-
-	
+ private String message;
 }

@@ -9,6 +9,7 @@ import com.school.sba.entity.User;
 import com.school.sba.enums.UserRole;
 import com.school.sba.exception.UserNotFoundByIdException;
 import com.school.sba.repository.UserRepository;
+import com.school.sba.requestdto.SchoolRequest;
 import com.school.sba.requestdto.UserRequest;
 import com.school.sba.responsedto.UserResponse;
 import com.school.sba.service.UserService;
@@ -110,5 +111,20 @@ public class UserServiceImpl implements UserService {
 		   sturcture.setData(mapToUserResponse(user));
 		
 		return new ResponseEntity<ResponseStructure<UserResponse>>(sturcture,HttpStatus.OK);
-	}	
+	}
+
+
+
+
+//	@Override
+//	public ResponseEntity<ResponseStructure<UserResponse>> createSchool(int userId, SchoolRequest schoolRequest) 
+//	{
+//		User user = userRepo.findById(userId).orElseThrow(()->new UserNotFoundByIdException("user not found "));
+//		if (user.getUserRole().equals(UserRole.ADMIN))
+//		{ 
+//			
+//		}
+//		return null;
+//	}
+	
 }

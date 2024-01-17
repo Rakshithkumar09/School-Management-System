@@ -15,41 +15,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.school.sba.entity.School;
+import com.school.sba.requestdto.SchoolRequest;
+import com.school.sba.responsedto.SchoolResponse;
 import com.school.sba.service.SchoolService;
 import com.school.sba.utility.ResponseStructure;
 @RestController
-@RequestMapping("/schools")
+
 public class SchoolController 
-{
+{ 
    
-	@Autowired
+	@Autowired 
 	private SchoolService schoolService;  
 	
-	@PostMapping
-   public ResponseEntity<ResponseStructure<School>> saveSchool(@RequestBody School school)
-   {
-	    return schoolService.saveSchool(school);
+	@PostMapping("/users/{userId}/schools") 
+   public ResponseEntity<ResponseStructure<SchoolResponse>>saveSchool(@PathVariable int userId, @RequestBody SchoolRequest schoolRequest)
+   { 
+	    return schoolService.saveSchool(userId,schoolRequest);
    }
-	@GetMapping("/{schoolId}") 
-	public ResponseEntity<ResponseStructure<School>> findSchool(@PathVariable int schoolId)
+	
+	@GetMapping("schools/{schoolId}") 
+	public ResponseEntity<ResponseStructure<SchoolResponse>> findSchool(@PathVariable int schoolId)
 	{ 
 		return schoolService.findSchoolById(schoolId);  
-		
+		 
 	}
 	@PutMapping
-	public ResponseEntity<ResponseStructure<School>> updateSchool(@RequestParam int  schoolId , @RequestBody School school)
+	public ResponseEntity<ResponseStructure<SchoolResponse>> updateSchool(@RequestParam int  schoolId , @RequestBody School school)
 	{
 		return schoolService.updateSchool(schoolId,school);
 		 
 	}
-	@GetMapping("/finds")
-	public ResponseEntity<ResponseStructure<List< School>>> findAll()
-	{
-		return schoolService.findAllSchools();
-		
-	} 
-	@DeleteMapping
-	public  ResponseEntity<ResponseStructure<School>> deleteSchool(@RequestParam int schoolId)
+//	@GetMapping("/finds")
+//	public ResponseEntity<ResponseStructure<List< School>>> findAll()
+//	{
+//		return schoolService.findAllSchools();
+//		
+//	} 
+	@DeleteMapping  
+	public  ResponseEntity<ResponseStructure<SchoolResponse>> deleteSchool(@RequestParam int schoolId)
 	{
 		return schoolService.deleteSchool(schoolId);
 	}

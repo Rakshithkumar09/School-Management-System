@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.sba.requestdto.SchoolRequest;
 import com.school.sba.requestdto.UserRequest;
 import com.school.sba.responsedto.UserResponse;
 import com.school.sba.service.UserService;
@@ -39,7 +40,7 @@ public class UserController
 		return userService.deleteUser(userId);
 	}
 	
-		
+	
 	
 }
  
