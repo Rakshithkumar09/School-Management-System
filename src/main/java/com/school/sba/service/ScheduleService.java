@@ -11,4 +11,6 @@ public interface ScheduleService
 
 	ResponseEntity<ResponseStructure<ScheduleResponse>> saveSchedule(int schoolId, ScheduleRequest scheduleRequest);
 
+	ResponseEntity<ResponseStructure<ScheduleResponse>> findSchedule(int schoolId);
+
 }

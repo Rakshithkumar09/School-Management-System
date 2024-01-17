@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.Schedule;
+import com.school.sba.entity.School;
+import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.exception.UserNotFoundByIdException;
 import com.school.sba.repository.ScheduleRepository;
 import com.school.sba.repository.SchoolRepository;
@@ -79,6 +81,24 @@ public class ScheduleServiceImpl implements ScheduleService
 				.scheduleLunchTime(scheduleRequest.getScheduleLunchTime())
 				.scheduleLunchLenghtInMinute(Duration.ofMinutes(scheduleRequest.getScheduleLunchLenghtInMinute()))
 				.build();
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<ScheduleResponse>> findSchedule(int schoolId) 
+	{
+		return scheduleRepo.findById(schoolId)
+				.map(s ->{ 
+					
+					structure.setStatus(HttpStatus.CREATED.value());
+					structure.setMessage("schedule saved successfully");
+					structure.setData(mapToScheduleResponse(s));
+					
+					return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.FOUND);
+
+				})
+				.orElseThrow(()-> new SchoolNotFoundByIdException("School not found"));
+		
+		
 	} 
 
 

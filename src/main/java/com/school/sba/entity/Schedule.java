@@ -23,7 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Schedule 
-{ 
+{  
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int scheduleId;
