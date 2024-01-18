@@ -1,7 +1,10 @@
 package com.school.sba.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +15,7 @@ import com.school.sba.responsedto.AcademicProgramResponse;
 import com.school.sba.service.AcademicProgramService;
 import com.school.sba.utility.ResponseStructure;
 
-@RestController
+@RestController 
 public class AcademicProgramController 
 {
 	@Autowired
@@ -23,5 +26,10 @@ public class AcademicProgramController
      public ResponseEntity<ResponseStructure<AcademicProgramResponse>> addAcademicProgram(@PathVariable int schoolId, @RequestBody AcademicProgramRequest academicProgramRequest)
      {
     	 return  academicProgramService.addAcademicProgram(schoolId,academicProgramRequest);
+     }
+     @GetMapping("/schools/{schoolId}/academic-programs")
+     public ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>> getAcademicProgram (@PathVariable int schoolId)
+     {
+    	  return  academicProgramService.getAcademicProgram(schoolId);
      }
 }
