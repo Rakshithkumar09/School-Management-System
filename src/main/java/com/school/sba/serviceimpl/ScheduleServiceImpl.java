@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.Schedule;
-import com.school.sba.entity.School;
 import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.exception.UserNotFoundByIdException;
 import com.school.sba.repository.ScheduleRepository;
@@ -28,7 +27,7 @@ public class ScheduleServiceImpl implements ScheduleService
 	@Autowired 
 	private ResponseStructure<ScheduleResponse>  structure;
 
-		 
+
 	@Override
 	public ResponseEntity<ResponseStructure<ScheduleResponse>> saveSchedule(int schoolId, ScheduleRequest scheduleRequest) 
 	{
@@ -76,7 +75,7 @@ public class ScheduleServiceImpl implements ScheduleService
 				.scheduleCloseAt(scheduleRequest.getScheduleCloseAt())
 				.scheduleClassHourPerDay(scheduleRequest.getScheduleClassHourPerDay())
 				.scheduleClassHourLenghtInMinute(Duration.ofMinutes( scheduleRequest.getScheduleClassHourLenghtInMinute()))
-		 		.scheduleBreakTime(scheduleRequest.getScheduleBreakTime())
+				.scheduleBreakTime(scheduleRequest.getScheduleBreakTime())
 				.scheduleBreakLenghtInMinute(Duration.ofMinutes(scheduleRequest.getScheduleBreakLenghtInMinute()))
 				.scheduleLunchTime(scheduleRequest.getScheduleLunchTime())
 				.scheduleLunchLenghtInMinute(Duration.ofMinutes(scheduleRequest.getScheduleLunchLenghtInMinute()))
@@ -88,17 +87,37 @@ public class ScheduleServiceImpl implements ScheduleService
 	{
 		return scheduleRepo.findById(schoolId)
 				.map(s ->{ 
-					
+
 					structure.setStatus(HttpStatus.CREATED.value());
-					structure.setMessage("schedule saved successfully");
+					structure.setMessage("schedule found successfully");
 					structure.setData(mapToScheduleResponse(s));
-					
+
 					return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.FOUND);
 
 				})
 				.orElseThrow(()-> new SchoolNotFoundByIdException("School not found"));
-		
-		
+
+
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<ScheduleResponse>> updateSchedule(int scheduleId,ScheduleRequest scheduleRequest) 
+	{  
+		return scheduleRepo.findById(scheduleId)
+				.map(schedule ->{
+
+					schedule = scheduleRepo.save(mapToSchedule(scheduleRequest));
+
+					structure.setStatus(HttpStatus.OK.value());
+					structure.setMessage("Schedule updated successfully");
+					structure.setData(mapToScheduleResponse(schedule)); 
+
+					return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.OK);
+
+ 
+				})
+				.orElseThrow(()-> new SchoolNotFoundByIdException("schedule not found"));
+
 	} 
 
 

@@ -13,4 +13,6 @@ public interface ScheduleService
 
 	ResponseEntity<ResponseStructure<ScheduleResponse>> findSchedule(int schoolId);
 
+	ResponseEntity<ResponseStructure<ScheduleResponse>> updateSchedule(int scheduleId , ScheduleRequest scheduleRequest);
+
 }

@@ -1,5 +1,7 @@
 package com.school.sba.entity;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
@@ -33,6 +35,11 @@ public class School
 
 	@OneToOne
 	private Schedule schedule;
+	
+	@OneToMany(mappedBy = "school")
+	private List<AcademicProgram> academicProgram;
+	
+	
 	
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.school.sba.exception.IllegalRequestException;
+import com.school.sba.exception.ScheduleNotFoundByIdException;
 import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.exception.UserNotFoundByIdException;
 
@@ -63,14 +64,19 @@ public class ApplicationExceptionHandler extends  ResponseEntityExceptionHandler
 	@ExceptionHandler(UserNotFoundByIdException.class)
 	public ResponseEntity<Object> handelUserNotFoundById(UserNotFoundByIdException ex)
 	{
-		return structure(HttpStatus.BAD_REQUEST,  ex.getMessage(),"user not found with the given id");
-		
+		return structure(HttpStatus.NOT_FOUND,  ex.getMessage(),"user not found with the given id");
+		 
 	}
 	@ExceptionHandler(IllegalRequestException.class)
 	public ResponseEntity<Object> handelIllegalRequest(IllegalRequestException ex)
 	{
 		return structure(HttpStatus.BAD_REQUEST,  ex.getMessage(),"illegal request");
 		
+	} 
+	@ExceptionHandler(ScheduleNotFoundByIdException.class)
+	public ResponseEntity<Object> handelScheduleNotFoundById(ScheduleNotFoundByIdException ex)
+	{
+		return structure(HttpStatus.NOT_FOUND,ex.getMessage(),"Schedule not found by given id");
 	}
 	 
 }
