@@ -1,7 +1,9 @@
 package com.school.sba.responsedto;
 
 import java.time.LocalTime;
+import java.util.List;
 
+import com.school.sba.entity.Subject;
 import com.school.sba.enums.ProgramType;
 
 import lombok.Builder;
@@ -16,6 +18,8 @@ public class AcademicProgramResponse
 	private String programName;
 	private LocalTime beginsAt;
 	private LocalTime endsAt;
+	
+	 private List<Subject> subjects;
 	
 	private ProgramType programType;
 }

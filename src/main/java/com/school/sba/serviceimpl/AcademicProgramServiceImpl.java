@@ -1,5 +1,6 @@
 package com.school.sba.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.AcademicProgram;
+import com.school.sba.entity.Subject;
 import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.repository.AcademicProgramRepository;
 import com.school.sba.repository.SchoolRepository;
@@ -57,16 +59,26 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 		 
 	}
 
-	private AcademicProgramResponse mapToAcademicResponse(AcademicProgram academicProgram) {
+	public AcademicProgramResponse mapToAcademicResponse(AcademicProgram academicProgram) {
 		
+		List<String> subjects = new ArrayList<String>();
+		List<Subject> listOfSubject = academicProgram.getSubjects();
+		
+		if(listOfSubject != null) {
+			listOfSubject.forEach(sub -> {
+				subjects.add(sub.getSubjectName());
+			});
+		}
+ 
 		return AcademicProgramResponse.builder()
 				.programId(academicProgram.getProgramId())
 				.programName(academicProgram.getProgramName())
 				.programType(academicProgram.getProgramType()) 
 				.beginsAt(academicProgram.getBeginsAt())
 				.endsAt(academicProgram.getEndsAt())
+				.subjects(academicProgram.getSubjects())
 				.build();
-	}
+	} 
 	
 	private AcademicProgram mapToAcademicProgram(AcademicProgramRequest academicProgramRequest) {
 

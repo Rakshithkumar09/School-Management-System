@@ -75,8 +75,6 @@ public class SchoolServiceImplimentation implements SchoolService
 
 		}).orElseThrow(()-> new UserNotFoundByIdException("user not found"));
 
-
-
 	} 
 
 	@Override
