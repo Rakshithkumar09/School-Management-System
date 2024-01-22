@@ -15,5 +15,9 @@ public interface UserService {
 
 	ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId);
 
+	ResponseEntity<ResponseStructure<UserResponse>> assignTeacherAndStudent(int programId, int userId);
+
+	ResponseEntity<ResponseStructure<UserResponse>> addSubjectToTeacher(int subjectId,int userId);
+
 
 }

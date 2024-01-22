@@ -39,21 +39,5 @@ public class SchoolController
 		return schoolService.findSchoolById(schoolId);  
 		 
 	}
-	@PutMapping
-	public ResponseEntity<ResponseStructure<SchoolResponse>> updateSchool(@RequestParam int  schoolId , @RequestBody School school)
-	{
-		return schoolService.updateSchool(schoolId,school);
-		 
-	}
-//	@GetMapping("/finds")
-//	public ResponseEntity<ResponseStructure<List< School>>> findAll()
-//	{
-//		return schoolService.findAllSchools();
-//		
-//	} 
-	@DeleteMapping  
-	public  ResponseEntity<ResponseStructure<SchoolResponse>> deleteSchool(@RequestParam int schoolId)
-	{
-		return schoolService.deleteSchool(schoolId);
-	}
+	
 }

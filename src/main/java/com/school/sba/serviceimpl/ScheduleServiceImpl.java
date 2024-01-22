@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.Schedule;
+import com.school.sba.exception.IllegalRequestException;
 import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.exception.UserNotFoundByIdException;
 import com.school.sba.repository.ScheduleRepository;
@@ -34,7 +35,7 @@ public class ScheduleServiceImpl implements ScheduleService
 		return schoolRepo.findById(schoolId)
 				.map(s ->{ 
 					if(s.getSchedule()==null)
-					{
+				 	{
 						Schedule schedule	 = mapToSchedule(scheduleRequest);
 						schedule = scheduleRepo.save(schedule);
 						s.setSchedule(schedule);
@@ -46,17 +47,18 @@ public class ScheduleServiceImpl implements ScheduleService
 
 						return new  ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.CREATED);
 
-					} 
+					}  
 					else {
-						throw new RuntimeException();
+						throw new IllegalArgumentException();
 					}
-				}).orElseThrow(()-> new UserNotFoundByIdException("user not found"));
+				}).orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
 
 	}  
 
 	private ScheduleResponse mapToScheduleResponse(Schedule schedule) {
 
 		return ScheduleResponse.builder()
+				.scheduleId(schedule.getScheduleId())
 				.scheduleOpensAt(schedule.getScheduleOpensAt())
 				.scheduleCloseAt(schedule.getScheduleCloseAt())
 				.scheduleClassHourPerDay(schedule.getScheduleClassHourPerDay())
@@ -105,9 +107,10 @@ public class ScheduleServiceImpl implements ScheduleService
 	{  
 		return scheduleRepo.findById(scheduleId)
 				.map(schedule ->{
-
+                      Schedule schedule2 = mapToSchedule(scheduleRequest);
+                      schedule2.setScheduleId(scheduleId);
 					schedule = scheduleRepo.save(mapToSchedule(scheduleRequest));
-
+					
 					structure.setStatus(HttpStatus.OK.value());
 					structure.setMessage("Schedule updated successfully");
 					structure.setData(mapToScheduleResponse(schedule)); 

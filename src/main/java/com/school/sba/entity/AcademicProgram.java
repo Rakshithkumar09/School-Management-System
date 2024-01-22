@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+ 
 
 @Entity
 @Getter
@@ -40,4 +40,7 @@ public class AcademicProgram
 	
 	@ManyToMany
    private List<Subject> subjects;
+	
+	@ManyToMany 
+	private List<User> user;
 }

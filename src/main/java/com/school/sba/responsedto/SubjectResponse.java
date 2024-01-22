@@ -2,7 +2,8 @@ package com.school.sba.responsedto;
 
 import java.util.List;
 
-import jakarta.persistence.Id;
+import com.school.sba.entity.Subject;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +16,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubjectResponse 
-{
-	@Id
+{ 
+	
 	   private int subjectId;
-	   private List<String> subjectNames;
+	    
+	   private String subjectNames;
 }

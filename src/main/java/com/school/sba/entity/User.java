@@ -1,5 +1,7 @@
 package com.school.sba.entity;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.school.sba.enums.UserRole;
@@ -9,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,12 +25,12 @@ import lombok.Setter;
 @Setter 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor 
 public class User 
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	private int userId; 
 	@Column(unique = true)
 	private String userName;
 	private String passward;
@@ -37,9 +40,14 @@ public class User
 	private String email;
 	private long contactNo;
 	private UserRole userRole;
-	
 	private boolean isDelete;
 	 
 	@ManyToOne 
-	private School school;
+	private School school;  
+	
+	@ManyToMany(mappedBy = "user")
+	private List< AcademicProgram> academicProgram;
+	
+	@ManyToOne
+	private Subject subject;
 }

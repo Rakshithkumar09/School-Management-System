@@ -14,6 +14,7 @@ import com.school.sba.entity.Subject;
 import com.school.sba.exception.SchoolNotFoundByIdException;
 import com.school.sba.repository.AcademicProgramRepository;
 import com.school.sba.repository.SchoolRepository;
+import com.school.sba.repository.SubjectRepository;
 import com.school.sba.requestdto.AcademicProgramRequest;
 import com.school.sba.responsedto.AcademicProgramResponse;
 import com.school.sba.service.AcademicProgramService;
@@ -30,8 +31,11 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 	private SchoolRepository schoolRepository;
 
 	@Autowired
+	private SubjectRepository subjectRepository;
+
+	@Autowired
 	ResponseStructure<AcademicProgramResponse> structure;
- 
+
 	@Autowired
 	ResponseStructure<List<AcademicProgramResponse>> resp;
 
@@ -39,37 +43,37 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 	public ResponseEntity<ResponseStructure<AcademicProgramResponse>> addAcademicProgram(int schoolId,
 			AcademicProgramRequest academicProgramRequest) 
 	{
-        
-		  return schoolRepository.findById(schoolId)
-		.map(school -> {
-			AcademicProgram academicProgram = academicProgramRepository.save(mapToAcademicProgram(academicProgramRequest));
-			 school.getAcademicProgram().add(academicProgram); 
-			 school  = schoolRepository.save(school);
-			 academicProgram.setSchool(school);
-           	 academicProgram= academicProgramRepository.save(academicProgram); 
-           	 
-			 structure.setStatus(HttpStatus.CREATED.value());
-			 structure.setMessage("AcademicProgram added successfully");
-			 structure.setData(mapToAcademicResponse( academicProgram));
-			 
-			 return new ResponseEntity<ResponseStructure<AcademicProgramResponse>>(structure,HttpStatus.CREATED);
 
-               })
-		.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
-		 
+		return schoolRepository.findById(schoolId)
+				.map(school -> {
+					AcademicProgram academicProgram = academicProgramRepository.save(mapToAcademicProgram(academicProgramRequest));
+					school.getAcademicProgram().add(academicProgram); 
+					school  = schoolRepository.save(school);
+					academicProgram.setSchool(school);
+					academicProgram= academicProgramRepository.save(academicProgram); 
+
+					structure.setStatus(HttpStatus.CREATED.value());
+					structure.setMessage("AcademicProgram added successfully");
+					structure.setData(mapToAcademicResponse( academicProgram));
+
+					return new ResponseEntity<ResponseStructure<AcademicProgramResponse>>(structure,HttpStatus.CREATED);
+
+				})
+				.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
+
 	}
 
 	public AcademicProgramResponse mapToAcademicResponse(AcademicProgram academicProgram) {
-		
+
 		List<String> subjects = new ArrayList<String>();
 		List<Subject> listOfSubject = academicProgram.getSubjects();
-		
+
 		if(listOfSubject != null) {
 			listOfSubject.forEach(sub -> {
 				subjects.add(sub.getSubjectName());
 			});
 		}
- 
+
 		return AcademicProgramResponse.builder()
 				.programId(academicProgram.getProgramId())
 				.programName(academicProgram.getProgramName())
@@ -79,7 +83,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 				.subjects(academicProgram.getSubjects())
 				.build();
 	} 
-	
+
 	private AcademicProgram mapToAcademicProgram(AcademicProgramRequest academicProgramRequest) {
 
 		return AcademicProgram.builder()
@@ -89,44 +93,40 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 				.programType(academicProgramRequest.getProgramType())
 				.build();
 	}
- 
+
 	@Override
 	public ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>> getAcademicProgram(int schoolId) 
 	{
-	return	schoolRepository.findById(schoolId)
-		.map(school ->{
-			List<AcademicProgram> list = academicProgramRepository.findAll();
-			List<AcademicProgramResponse> collect = list.stream().map(this::mapToAcademicResponse)
-			.collect(Collectors.toList()); 
-			
-			if(list.isEmpty())
-			{
-				resp.setStatus(HttpStatus.NO_CONTENT.value());
-				resp.setMessage("Academic programs are empty");
-				resp.setData(collect); 
-				
-				return new ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>>(resp,HttpStatus.NO_CONTENT);
-			}
-			
-			resp.setStatus(HttpStatus.FOUND.value());
-			 resp.setMessage("AcademicProgram is found successfully");
-			resp.setData(collect);
-			
-			return new ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>>(resp,HttpStatus.FOUND);
- 
-			
-		})
-		.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
-			
-			
-			
-		
-		
-		
-		
-		
+		return	schoolRepository.findById(schoolId)
+				.map(school ->{
+					List<AcademicProgram> list = academicProgramRepository.findAll();
+					List<AcademicProgramResponse> collect = list.stream().map(this::mapToAcademicResponse)
+							.collect(Collectors.toList()); 
+
+					if(list.isEmpty())
+					{
+						resp.setStatus(HttpStatus.NO_CONTENT.value());
+						resp.setMessage("Academic programs are empty");
+						resp.setData(collect); 
+
+						return new ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>>(resp,HttpStatus.NO_CONTENT);
+					}
+
+					resp.setStatus(HttpStatus.FOUND.value());
+					resp.setMessage("AcademicProgram is found successfully");
+					resp.setData(collect);
+
+					return new ResponseEntity<ResponseStructure<List< AcademicProgramResponse>>>(resp,HttpStatus.FOUND);
+
+
+				})
+				.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
+
+
 	}
 
 	
-	
+
+
+
 }
