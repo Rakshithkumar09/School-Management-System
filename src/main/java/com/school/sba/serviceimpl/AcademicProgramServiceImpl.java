@@ -43,36 +43,36 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 	public ResponseEntity<ResponseStructure<AcademicProgramResponse>> addAcademicProgram(int schoolId,
 			AcademicProgramRequest academicProgramRequest) 
 	{
-
+ 
 		return schoolRepository.findById(schoolId)
 				.map(school -> {
 					AcademicProgram academicProgram = academicProgramRepository.save(mapToAcademicProgram(academicProgramRequest));
 					school.getAcademicProgram().add(academicProgram); 
 					school  = schoolRepository.save(school);
 					academicProgram.setSchool(school);
-					academicProgram= academicProgramRepository.save(academicProgram); 
+					academicProgram = academicProgramRepository.save(academicProgram); 
 
 					structure.setStatus(HttpStatus.CREATED.value());
 					structure.setMessage("AcademicProgram added successfully");
 					structure.setData(mapToAcademicResponse( academicProgram));
-
+  
 					return new ResponseEntity<ResponseStructure<AcademicProgramResponse>>(structure,HttpStatus.CREATED);
 
-				})
+				}) 
 				.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
 
-	}
+	} 
 
 	public AcademicProgramResponse mapToAcademicResponse(AcademicProgram academicProgram) {
 
 		List<String> subjects = new ArrayList<String>();
 		List<Subject> listOfSubject = academicProgram.getSubjects();
-
+ 
 		if(listOfSubject != null) {
 			listOfSubject.forEach(sub -> {
 				subjects.add(sub.getSubjectName());
 			});
-		}
+		}   
 
 		return AcademicProgramResponse.builder()
 				.programId(academicProgram.getProgramId())
@@ -80,12 +80,13 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 				.programType(academicProgram.getProgramType()) 
 				.beginsAt(academicProgram.getBeginsAt())
 				.endsAt(academicProgram.getEndsAt())
-				.subjects(academicProgram.getSubjects())
-				.build();
-	} 
-
+				//.subjects(academicProgram.getSubjects())
+				.listSubjects(subjects)
+				.build(); 
+	}   
+ 
 	private AcademicProgram mapToAcademicProgram(AcademicProgramRequest academicProgramRequest) {
-
+ 
 		return AcademicProgram.builder()
 				.programName(academicProgramRequest.getProgramName())
 				.beginsAt(academicProgramRequest.getBeginsAt())

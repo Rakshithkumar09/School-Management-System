@@ -18,8 +18,6 @@ public class AcademicProgramResponse
 	private String programName;
 	private LocalTime beginsAt;
 	private LocalTime endsAt;
-	
-	 private List<Subject> subjects;
-	
+    private List<String> listSubjects;
 	private ProgramType programType;
 }

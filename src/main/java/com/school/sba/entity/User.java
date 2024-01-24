@@ -27,7 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor 
 public class User 
-{
+{ 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId; 
@@ -46,7 +46,7 @@ public class User
 	private School school;  
 	
 	@ManyToMany(mappedBy = "user")
-	private List< AcademicProgram> academicProgram;
+	private List<AcademicProgram> academicProgram;
 	
 	@ManyToOne
 	private Subject subject;

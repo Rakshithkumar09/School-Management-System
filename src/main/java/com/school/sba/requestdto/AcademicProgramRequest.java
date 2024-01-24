@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AcademicProgramRequest 
 {
-	  
+	   
 	private String programName;
 	private LocalTime beginsAt;
 	private LocalTime endsAt;

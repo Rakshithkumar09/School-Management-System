@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.AcademicProgram;
@@ -29,6 +30,9 @@ import com.school.sba.utility.ResponseStructure;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private UserRepository userRepo;
 
 	@Autowired
@@ -43,34 +47,24 @@ public class UserServiceImpl implements UserService {
 	private User mapToUser(UserRequest request) {
 		return User.builder()
 				.userName(request.getUserName())
-				.passward(request.getPassward())
+				.passward(passwordEncoder.encode(  request.getPassward()))
 				.firstName(request.getFirstName())
 				.lastName(request.getLastName())
 				.email(request.getEmail())
 				.contactNo(request.getContactNo())
 				.userRole(request.getUserRole())
 				.build();
-	}
+	} 
 
 	private UserResponse mapToUserResponse(User user) {
 		List<String> list = new ArrayList<String>();
-		List<AcademicProgram> listOfProgram = user.getAcademicProgram();
 
-		if (listOfProgram.isEmpty()) 
+		if(user.getAcademicProgram()!=null)
 		{
-
-		} else 
-		{
-			listOfProgram.forEach(program -> {
+			user.getAcademicProgram().forEach(program ->{
 				list.add(program.getProgramName());
-
 			});
 		} 
-
-		list.forEach(s -> 
-		{
-			System.out.println(s);
-		}); 
 
 		return UserResponse.builder()
 				.userName(user.getUserName())
@@ -79,17 +73,17 @@ public class UserServiceImpl implements UserService {
 				.email(user.getEmail())
 				.contactNo(user.getContactNo())
 				.userRole(user.getUserRole())
-				.academicProgram(list)
+				.academicProgram(list)   
 				.build();
-	} 
+	}   
 
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> saveUser(UserRequest userRequest) {
 		User user2 = mapToUser(userRequest);
 		if (user2.getUserRole().equals(UserRole.ADMIN)) 
-		{
+		{ 
 			boolean role = userRepo.existsByUserRole(userRequest.getUserRole());
- 
+
 
 			if (role == false)  
 			{ 
@@ -180,7 +174,6 @@ public class UserServiceImpl implements UserService {
 		}).orElseThrow(() -> new UserNotFoundByIdException("user not found"));
 
 	}
-
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> addSubjectToTeacher(int subjectId, int userId) 
 	{
@@ -210,5 +203,5 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	
+
 }
