@@ -9,7 +9,7 @@ import com.school.sba.utility.ResponseStructure;
 public interface SchoolService 
 {
 
-public	ResponseEntity<ResponseStructure<SchoolResponse>> saveSchool(int userId,SchoolRequest schoolRequest);
+public	ResponseEntity<ResponseStructure<SchoolResponse>> saveSchool(SchoolRequest schoolRequest);
  
 public ResponseEntity<ResponseStructure<SchoolResponse>> findSchoolById(int schoolId);
 

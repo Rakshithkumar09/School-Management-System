@@ -1,10 +1,9 @@
 package com.school.sba.serviceimpl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.entity.School;
@@ -35,8 +34,8 @@ public class SchoolServiceImplimentation implements SchoolService
 		return School.builder()
 				.schoolName(schoolRequest.getSchoolName())
 				.contactNumber(schoolRequest.getContactNumber())
-				.emailId(schoolRequest.getEmailId())
-				.address(schoolRequest.getAddress())
+	 			.emailId(schoolRequest.getEmailId())
+				.address(schoolRequest.getAddress()) 
 				.build(); 
 	}
 
@@ -53,19 +52,25 @@ public class SchoolServiceImplimentation implements SchoolService
 	} 
 
 	@Override
-	public ResponseEntity<ResponseStructure<SchoolResponse>> saveSchool(int userId,SchoolRequest schoolRequest) 
+	public ResponseEntity<ResponseStructure<SchoolResponse>> saveSchool(SchoolRequest schoolRequest)  
 	{ 
-		return userRepo.findById(userId).map(u ->
-		{
+		String username  = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepo.findByUserName(username).map(u ->  
+		{ 
 			if(u.getUserRole().equals(UserRole.ADMIN))
 			{ 
 				if(u.getSchool()==null)
 				{
-					School school = mapToSchool(schoolRequest);
-					school = repo.save(school);
-					u.setSchool(school);
-					userRepo.save(u);
-
+//					School school = mapToSchool(schoolRequest);
+//					school = repo.save(school);
+					
+					School school = repo.save(mapToSchool(schoolRequest));
+					userRepo.findAll().forEach(user->
+					{ 
+						user.setSchool(school); 
+						userRepo.save(user);
+					}); 
+					 
 					resp.setStatus(HttpStatus.CREATED.value());
 					resp.setMessage("school saved successfully");
 					resp.setData(mapToSchoolResponse(school));

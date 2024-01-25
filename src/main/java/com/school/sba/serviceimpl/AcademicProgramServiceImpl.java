@@ -42,16 +42,15 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 	@Override
 	public ResponseEntity<ResponseStructure<AcademicProgramResponse>> addAcademicProgram(int schoolId,
 			AcademicProgramRequest academicProgramRequest) 
-	{
- 
-		return schoolRepository.findById(schoolId)
+	{  
+  		return schoolRepository.findById(schoolId)
 				.map(school -> {
 					AcademicProgram academicProgram = academicProgramRepository.save(mapToAcademicProgram(academicProgramRequest));
 					school.getAcademicProgram().add(academicProgram); 
 					school  = schoolRepository.save(school);
 					academicProgram.setSchool(school);
 					academicProgram = academicProgramRepository.save(academicProgram); 
-
+ 
 					structure.setStatus(HttpStatus.CREATED.value());
 					structure.setMessage("AcademicProgram added successfully");
 					structure.setData(mapToAcademicResponse( academicProgram));
@@ -61,7 +60,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 				}) 
 				.orElseThrow(()-> new SchoolNotFoundByIdException("school not found"));
 
-	} 
+	}  
 
 	public AcademicProgramResponse mapToAcademicResponse(AcademicProgram academicProgram) {
 
@@ -73,7 +72,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService
 				subjects.add(sub.getSubjectName());
 			});
 		}   
-
+ 
 		return AcademicProgramResponse.builder()
 				.programId(academicProgram.getProgramId())
 				.programName(academicProgram.getProgramName())

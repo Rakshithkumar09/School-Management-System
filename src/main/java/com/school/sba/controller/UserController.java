@@ -2,6 +2,7 @@ package com.school.sba.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school.sba.enums.UserRole;
 import com.school.sba.requestdto.SchoolRequest;
 import com.school.sba.requestdto.UserRequest;
 import com.school.sba.responsedto.UserResponse;
@@ -25,16 +27,26 @@ public class UserController
     private UserService userService;
 	
 	@PostMapping("/users/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> saveUser(@RequestBody @Valid UserRequest user) 
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody @Valid UserRequest userRequest)
+	{ 
+		return userService.registerAdmin(userRequest);
+	}
+	
+	@PostMapping("/users")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public ResponseEntity<ResponseStructure<UserResponse>> addOtherUser(@RequestBody @Valid UserRequest user) 
 	{
-		return userService.saveUser(user);
+		return userService.addOtherUser(user);
 		
 	}
+	
 	@GetMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> findUserById(@PathVariable int userId)
 	{
 		return userService.findUserById(userId);
 	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(@PathVariable int userId)
 	{

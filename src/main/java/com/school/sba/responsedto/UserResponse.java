@@ -17,13 +17,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
+	private int userId;
 	private String userName;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private long contactNo;
 	private UserRole userRole;
-	
+	 
 	private List<String> academicProgram;
 }
  

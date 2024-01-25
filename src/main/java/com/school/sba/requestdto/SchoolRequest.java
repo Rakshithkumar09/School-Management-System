@@ -1,7 +1,5 @@
 package com.school.sba.requestdto;
 
-import com.school.sba.responsedto.SchoolResponse;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SchoolRequest 
-{
+{ 
 	private String schoolName;
 	private long contactNumber;
 	private String emailId;
 	private String address; 
+	
 }

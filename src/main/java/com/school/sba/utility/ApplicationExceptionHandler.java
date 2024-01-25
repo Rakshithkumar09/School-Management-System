@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.school.sba.exception.AdminCannotBeAssignedToAcademicProgramException;
+import com.school.sba.exception.AdminNotFoundException;
 import com.school.sba.exception.IllegalRequestException;
 import com.school.sba.exception.ProgramNotFoundByIdException;
 import com.school.sba.exception.ScheduleNotFoundByIdException;
@@ -74,11 +75,6 @@ public class ApplicationExceptionHandler extends  ResponseEntityExceptionHandler
 		return structure(HttpStatus.NOT_FOUND,ex.getMessage(),"Schedule Not Found With The Given Id");
 	}
 
-	@ExceptionHandler(SchoolNotFoundByIdException.class)
-	public ResponseEntity<Object> handelScheduleNotFoundById(SchoolNotFoundByIdException ex) 
-	{
-		return structure(HttpStatus.NOT_FOUND,ex.getMessage(),"School Not Found With The Given Id"); 
-	} 
 
 	@ExceptionHandler(AdminCannotBeAssignedToAcademicProgramException.class)
 	public ResponseEntity<Object> handelAdminCannotBeAssigned(AdminCannotBeAssignedToAcademicProgramException ex)
@@ -103,5 +99,9 @@ public class ApplicationExceptionHandler extends  ResponseEntityExceptionHandler
 
 		return structure( HttpStatus.NOT_FOUND,ex.getMessage(),"Teacher Not Present In User");  
 	}
-
+	@ExceptionHandler(AdminNotFoundException.class)
+	public ResponseEntity<Object> handelAdminNotfound(AdminNotFoundException ex)
+	{
+		return structure(HttpStatus.NOT_FOUND,ex.getMessage(),"entering the wrong user role only can register");
+	}
 } 

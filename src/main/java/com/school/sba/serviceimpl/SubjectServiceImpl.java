@@ -46,13 +46,11 @@ public class SubjectServiceImpl implements SubjectService {
 			sr.setSubjectNames(subject.getSubjectName());
 			listOfSubjectResponse.add(sr);
 
-		});
+		}); 
 
 		return listOfSubjectResponse;
 
 	}
-
-	
 
 	public ResponseEntity<ResponseStructure<AcademicProgramResponse>> addSubject(int programId,
 			SubjectRequest subjectRequest) {
@@ -87,7 +85,7 @@ public class SubjectServiceImpl implements SubjectService {
 
 			program.setSubjects(subjects);
 			academicProgramRepository.save(program);
-
+ 
 			structure.setStatus(HttpStatus.CREATED.value());
 			structure.setMessage("updated the subject list to Academic program");
 			structure.setData(academicProgramServiceImpl.mapToAcademicResponse(program));

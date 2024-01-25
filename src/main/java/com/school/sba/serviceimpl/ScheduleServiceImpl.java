@@ -31,7 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService
 
 	@Override
 	public ResponseEntity<ResponseStructure<ScheduleResponse>> saveSchedule(int schoolId, ScheduleRequest scheduleRequest) 
-	{
+	{ 
 		return schoolRepo.findById(schoolId)
 				.map(s ->{ 
 					if(s.getSchedule()==null)
